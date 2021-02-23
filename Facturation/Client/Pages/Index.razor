@@ -1,0 +1,57 @@
+﻿@page "/factures"
+@using Facturation.Shared
+@inject HttpClient Http
+@inject IBusinessData data
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (data.Factures == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Num Facture</th>
+                <th>Emission Facture</th>
+                <th>Réglement Attendu</th>
+                <th>Montant Du</th>
+                <th>Montant Réglé</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var facture in data.Factures)
+            {
+                <tr>
+                    <td>@facture.NumFacture</td>
+                    <td>@facture.EmissionFacture</td>
+                    <td>@facture.ReglementAttendu</td>
+                    <td>@facture.MontantDu</td>
+                    <td>@facture.MontantRegle</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ClassFacture[] LesFactures;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //LesFactures = await Http.GetFromJsonAsync<ClassFacture[]>("Les Factures");
+    }
+
+}
+@code {
+    private DashboardDto dashboard;
+
+    protected override async Task OnIniatializedAsync()
+    {
+        dashboard = await Http.GetFromJsonAsync<DashboardDto>("api/dashboard");
+    }
+}
